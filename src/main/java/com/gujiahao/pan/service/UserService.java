@@ -11,4 +11,7 @@ public interface UserService extends IService<User> {
 
     //注册
     boolean signup(User user);
+
+    //用户剩余空间检查
+    boolean checkSpace(Long userId, long size);
 }

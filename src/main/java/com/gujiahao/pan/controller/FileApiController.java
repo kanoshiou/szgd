@@ -10,10 +10,8 @@ import com.gujiahao.pan.utils.Result;
 import com.gujiahao.pan.utils.ResultCodeEnum;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -47,4 +45,34 @@ public class FileApiController {
         objects.addAll(fileList);
         return Result.ok(objects);
     }
+
+    @PostMapping("uploadFile")
+    public Result upload(MultipartFile file,
+                         HttpServletRequest request) {
+        //token验证
+        String token = request.getHeader("token");
+        if(token.isEmpty() || AuthContextHolder.isExpired(request)) {
+            return Result.fail(ResultCodeEnum.TOKEN_TIME_EXPIRED);
+        }
+
+        //从token中获取userid
+        final Long userId = Long.parseLong(JwtHelper.getUserId(token));
+
+        final long size = file.getSize();
+
+        //用户剩余空间检查
+        boolean sizeCheck = userService.checkSpace(userId, size);
+        if(!sizeCheck) {
+            return Result.fail(ResultCodeEnum.OUT_OF_SPACE_ERROR);
+        }
+
+        //文件上传
+        boolean uploaded =  fileService.upload(userId, file);
+        if (!uploaded) {
+            return Result.fail(ResultCodeEnum.UPLOAD_ERROR);
+        }
+
+        return Result.ok();
+    }
+
 }

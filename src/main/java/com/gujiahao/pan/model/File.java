@@ -13,23 +13,33 @@ import lombok.Data;
 public class File {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "file_id")
+    @ApiModelProperty(value = "文件id")
     @TableId(value = "file_id")
     private Long fileId;
 
-    @ApiModelProperty(value = "user_id")
+    @ApiModelProperty(value = "用户id")
     @TableField(value = "user_id")
     private Long userId;
 
-    @ApiModelProperty(value = "file_name")
+    @ApiModelProperty(value = "文件名")
     @TableField(value = "file_name")
     private String fileName;
 
-    @ApiModelProperty(value = "file_size")
+    @ApiModelProperty(value = "文件类型")
+    @TableField(value = "file_type")
+    private String fileType;
+
+    @ApiModelProperty(value = "文件大小")
     @TableField(value = "file_size")
     private Long fileSize;
 
-    @ApiModelProperty(value = "file_address")
-    @TableField(value = "file_address")
-    private String fileAddress;
+    @ApiModelProperty(value = "文件路径")
+    @TableField(value = "file_path")
+    private String filePath;
+
+    @ApiModelProperty(value = "文件MD5")
+    @TableField(value = "file_MD5")
+    private String fileMD5;
+
+
 }

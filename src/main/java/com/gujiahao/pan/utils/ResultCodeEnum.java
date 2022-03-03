@@ -19,19 +19,19 @@ public enum ResultCodeEnum {
 
     TOKEN_ERROR(209, "token异常"),
     TOKEN_TIME_EXPIRED(208, "token过期"),
-    CODE_TIME_EXPIRED(209, "验证码过期"),
-    CODE_ERROR(210, "验证码错误"),
     PASSWORD_ERROR(211, "密码错误"),
     REGISTER_USERNAME_ERROR(212, "用戶名已被使用"),
-    REGISTER_MOBILE_ERROR(213, "手机号已被使用"),
     USER_STATUS_ERROR(214, "用户状态异常"),
 
-
-
+    FILE_ALREADY_EXIST(444,"文件已存在"),
+    OUT_OF_SPACE_ERROR(406,"用户空间不足"),
+    UPLOAD_ERROR(408, "上传出错"),
     DUPLICATED_NAME_ERROR(405,"存在重复用户名"),
+    FILE_NULL_EXCEPTION(408, "文件为空"),
+
+
     FOLDER_NOT_EXIST(406,"文件夹不存在")
     ;
-
 
 
     private Integer code;
