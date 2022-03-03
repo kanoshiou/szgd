@@ -2,6 +2,8 @@ package com.gujiahao.pan.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.gujiahao.pan.mapper.FileMapper;
 import com.gujiahao.pan.model.File;
 import com.gujiahao.pan.service.FileService;
@@ -18,12 +20,15 @@ import java.util.List;
 public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements FileService {
     //根据用户id查询文件列表
     @Override
-    public List<File> getList(String userId) {
+    public PageInfo<File> getList(String userId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+
         QueryWrapper<File> wrapper = new QueryWrapper();
         wrapper.eq("user_id", userId);
         final List<File> list = baseMapper.selectList(wrapper);
+        PageInfo<File> pageInfo = new PageInfo<>(list);
 
-        return list;
+        return pageInfo;
     }
 
     //文件上传
@@ -78,6 +83,17 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
             e.printStackTrace();
         }
         return false;
+    }
+
+    //模糊搜索
+    @Override
+    public PageInfo<File> fuzzySearch(Long userId, String context, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+
+        List<File> list = baseMapper.fuzzySearch(userId, context);
+        PageInfo<File> pageInfo = new PageInfo<>(list);
+
+        return pageInfo;
     }
 
 }

@@ -1,6 +1,6 @@
 package com.gujiahao.pan.controller;
 
-import com.alibaba.fastjson.JSONArray;
+import com.github.pagehelper.PageInfo;
 import com.gujiahao.pan.model.File;
 import com.gujiahao.pan.service.FileService;
 import com.gujiahao.pan.service.UserService;
@@ -26,8 +26,8 @@ public class FileApiController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("getList")
-    public Result getFileList(HttpServletRequest request) {
+    @GetMapping("getList/{pageNum}")
+    public Result getFileList(@PathVariable Integer pageNum, HttpServletRequest request) {
         //token验证
         String token = request.getHeader("token");
         if(token.isEmpty() || AuthContextHolder.isExpired(request)) {
@@ -38,12 +38,9 @@ public class FileApiController {
         final String userId = JwtHelper.getUserId(token);
 
         //根据id查询文件列表
-        List<File> fileList = fileService.getList(userId);
+        PageInfo<File> fileList = fileService.getList(userId,pageNum,10);
 
-        //封装返回值
-        final JSONArray objects = new JSONArray();
-        objects.addAll(fileList);
-        return Result.ok(objects);
+        return Result.ok(fileList);
     }
 
     @PostMapping("uploadFile")
@@ -74,5 +71,23 @@ public class FileApiController {
 
         return Result.ok();
     }
+
+    @GetMapping("fuzzySearch/{context}/{pageNum}")
+    public Result fuzzySearch(@PathVariable String context,@PathVariable Integer pageNum, HttpServletRequest request) {
+        //token验证
+        String token = request.getHeader("token");
+        if(token.isEmpty() || AuthContextHolder.isExpired(request)) {
+            return Result.fail(ResultCodeEnum.TOKEN_TIME_EXPIRED);
+        }
+
+        //从token中获取userid
+        final Long userId = Long.parseLong(JwtHelper.getUserId(token));
+
+        //模糊搜索
+        PageInfo<File> fileList = fileService.fuzzySearch(userId, context, pageNum, 10);
+        return  Result.ok(fileList);
+    }
+
+
 
 }

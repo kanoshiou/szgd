@@ -15,12 +15,10 @@ public enum ResultCodeEnum {
     SERVICE_ERROR(203, "服务异常"),
     DATA_ERROR(204, "数据异常"),
     DATA_UPDATE_ERROR(205, "数据版本异常"),
-    ORDER_TYPE_ERROR(206, "排序方法错误"),
 
     TOKEN_ERROR(209, "token异常"),
     TOKEN_TIME_EXPIRED(208, "token过期"),
     PASSWORD_ERROR(211, "密码错误"),
-    REGISTER_USERNAME_ERROR(212, "用戶名已被使用"),
     USER_STATUS_ERROR(214, "用户状态异常"),
 
     FILE_ALREADY_EXIST(444,"文件已存在"),
@@ -28,9 +26,6 @@ public enum ResultCodeEnum {
     UPLOAD_ERROR(408, "上传出错"),
     DUPLICATED_NAME_ERROR(405,"存在重复用户名"),
     FILE_NULL_EXCEPTION(408, "文件为空"),
-
-
-    FOLDER_NOT_EXIST(406,"文件夹不存在")
     ;
 
 
