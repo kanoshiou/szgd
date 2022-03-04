@@ -62,6 +62,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         final EncryptorUtils encryptorUtils = new EncryptorUtils();
         final String encryptedPassword = encryptorUtils.encrypt(user.getUserPassword());
 
+
         //user
         User userInfo = new User();
         userInfo.setUserName(user.getUserName());
@@ -70,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userInfo.setUsedSpace(0L);
 
         //上传数据库
-        final int insert = baseMapper.insert(user);
+        final int insert = baseMapper.insert(userInfo);
 
         return insert > 0;
     }
