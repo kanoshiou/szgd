@@ -77,17 +77,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     //用户剩余空间检查并更新
     @Override
-    public boolean checkSpace(Long userId, long size) {
+    public User checkSpace(Long userId, long size) {
         final User user = baseMapper.selectById(userId);
         Long totalSpace = user.getTotalSpace();
         Long usedSpace = user.getUsedSpace() + size;
 
         if(totalSpace < usedSpace) {
-            return false;
+            return null;
         }
         user.setUsedSpace(usedSpace);
         final int i = baseMapper.updateById(user);
-        return i > 0;
+
+        user.setUserPassword(null);
+        return user;
     }
 
     /**

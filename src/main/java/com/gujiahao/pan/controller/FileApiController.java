@@ -2,6 +2,7 @@ package com.gujiahao.pan.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.gujiahao.pan.model.File;
+import com.gujiahao.pan.model.User;
 import com.gujiahao.pan.service.FileService;
 import com.gujiahao.pan.service.UserService;
 import com.gujiahao.pan.utils.AuthContextHolder;
@@ -58,8 +59,8 @@ public class FileApiController {
         final long size = file.getSize();
 
         //用户剩余空间检查
-        boolean sizeCheck = userService.checkSpace(userId, size);
-        if(!sizeCheck) {
+        User userInfo = userService.checkSpace(userId, size);
+        if(null == userInfo) {
             return Result.fail(ResultCodeEnum.OUT_OF_SPACE_ERROR);
         }
 
@@ -69,7 +70,7 @@ public class FileApiController {
             return Result.fail(ResultCodeEnum.UPLOAD_ERROR);
         }
 
-        return Result.ok();
+        return Result.ok(userInfo);
     }
 
     @GetMapping("fuzzySearch/{context}/{pageNum}")
